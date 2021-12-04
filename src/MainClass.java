@@ -13,11 +13,11 @@ import java.util.concurrent.CyclicBarrier;
 import java.util.concurrent.Semaphore;
 
 public class MainClass {
-    static final int CARS_COUNT = 4;
-    static final CyclicBarrier CYCLIC_BARRIER = new CyclicBarrier(CARS_COUNT);
-    static final CountDownLatch END_OF_PREPARED = new CountDownLatch(CARS_COUNT);
-    static final CountDownLatch END_OF_RACE = new CountDownLatch(CARS_COUNT);
-    static final Semaphore TUNNEL = new Semaphore(CARS_COUNT/2);
+    public static final int CARS_COUNT = 4;
+    public static final CyclicBarrier CYCLIC_BARRIER = new CyclicBarrier(CARS_COUNT);
+    public static final CountDownLatch END_OF_PREPARED = new CountDownLatch(CARS_COUNT);
+    public static final CountDownLatch END_OF_RACE = new CountDownLatch(CARS_COUNT);
+    public static final Semaphore TUNNEL = new Semaphore(CARS_COUNT/2);
 
     public static void main(String[] args) {
         System.out.println("ВАЖНОЕ ОБЪЯВЛЕНИЕ >>> Подготовка!!!");

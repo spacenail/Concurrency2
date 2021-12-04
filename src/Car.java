@@ -42,6 +42,7 @@ public class Car implements Runnable {
         Thread.sleep(500 + (int) (Math.random() * 800));
         System.out.println(this.name + " готов");
         MainClass.END_OF_PREPARED.countDown();
+        Thread.sleep(10);
         MainClass.CYCLIC_BARRIER.await();
     }
 
