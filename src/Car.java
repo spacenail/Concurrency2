@@ -51,18 +51,7 @@ public class Car implements Runnable {
     private void start() {
         for (int i = 0; i < race.getStages().size(); i++) {
             Stage stage = race.getStages().get(i);
-            if (stage instanceof Tunnel) {
-                try {
-                    concurrent.getTunnel().acquire();
                     stage.go(this);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                } finally {
-                    concurrent.getTunnel().release();
-                }
-            } else {
-                stage.go(this);
-            }
         }
         concurrent.getEndOfRace().countDown();
         if(concurrent.getEndOfRace().getCount() == concurrent.getThreads() - 1){
