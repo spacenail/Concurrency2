@@ -2,14 +2,15 @@ import java.util.concurrent.BrokenBarrierException;
 
 public class Car implements Runnable {
     private static int CARS_COUNT;
+    private final Concurrent concurrent;
 
     static {
         CARS_COUNT = 0;
     }
 
-    private Race race;
-    private int speed;
-    private String name;
+    private final Race race;
+    private final int speed;
+    private final String name;
 
 
     public String getName() {
@@ -20,11 +21,12 @@ public class Car implements Runnable {
         return speed;
     }
 
-    public Car(Race race, int speed) {
+    public Car(Race race, int speed, Concurrent concurrent) {
         this.race = race;
         this.speed = speed;
         CARS_COUNT++;
         this.name = "Участник #" + CARS_COUNT;
+        this.concurrent = concurrent;
     }
 
     @Override
@@ -41,9 +43,9 @@ public class Car implements Runnable {
         System.out.println(this.name + " готовится");
         Thread.sleep(500 + (int) (Math.random() * 800));
         System.out.println(this.name + " готов");
-        MainClass.END_OF_PREPARED.countDown();
+        concurrent.getEndOfPrepared().countDown();
         Thread.sleep(10);
-        MainClass.CYCLIC_BARRIER.await();
+        concurrent.getStart().await();
     }
 
     private void start() {
@@ -51,18 +53,20 @@ public class Car implements Runnable {
             Stage stage = race.getStages().get(i);
             if (stage instanceof Tunnel) {
                 try {
-                    MainClass.TUNNEL.acquire();
+                    concurrent.getTunnel().acquire();
                     stage.go(this);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 } finally {
-                    MainClass.TUNNEL.release();
+                    concurrent.getTunnel().release();
                 }
             } else {
                 stage.go(this);
             }
         }
-        System.out.println(name + " прошел все этапы!");
-        MainClass.END_OF_RACE.countDown();
+        concurrent.getEndOfRace().countDown();
+        if(concurrent.getEndOfRace().getCount() == concurrent.getThreads() - 1){
+            System.out.println(name + " победитель гонки!");
+        }
     }
 }
