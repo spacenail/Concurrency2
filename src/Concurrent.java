@@ -6,7 +6,6 @@ public class Concurrent {
     private final CyclicBarrier start;
     private final CountDownLatch endOfPrepared;
     private final CountDownLatch endOfRace;
-    private final Semaphore tunnel;
     private final int threads;
 
 
@@ -14,7 +13,6 @@ public class Concurrent {
         start = new CyclicBarrier(threads);
         endOfPrepared = new CountDownLatch(threads);
         endOfRace = new CountDownLatch(threads);
-        tunnel = new Semaphore(threads/2);
         this.threads = threads;
     }
 
@@ -30,9 +28,6 @@ public class Concurrent {
         return endOfRace;
     }
 
-    public Semaphore getTunnel() {
-        return tunnel;
-    }
 
     public int getThreads() {
         return threads;

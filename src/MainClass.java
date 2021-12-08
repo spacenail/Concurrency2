@@ -15,7 +15,7 @@ public class MainClass {
     public static void main(String[] args) {
         Concurrent concurrent = new Concurrent(CARS_COUNT);
         System.out.println("ВАЖНОЕ ОБЪЯВЛЕНИЕ >>> Подготовка!!!");
-        Race race = new Race(new Road(60), new Tunnel(concurrent), new Road(40));//создание трассы
+        Race race = new Race(new Road(60), new Tunnel(CARS_COUNT), new Road(40));//создание трассы
         Car[] cars = new Car[CARS_COUNT];//создание участников
         for (int i = 0; i < cars.length; i++) {
             cars[i] = new Car(race, 20 + (int) (Math.random() * 10),concurrent);
